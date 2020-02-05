@@ -1,35 +1,36 @@
 $fn = 40;
 
-$scale = 2;
-$grade = 20 * $scale;
+$scale = 1.25;
+$grade = 59.4 * $scale;
 $length = 40 * $scale;
 $height = 20 * $scale;
 $thickness = 1 * $scale;
 $tolerance = 1;
 
 $wheel_radius = 6 * $scale;
-$wheel_base_thickness = 1.5 * $scale;
-$wheel_flange_thickness = .5 * $scale;
-$wheel_flange_width = .5 * $scale;
+$wheel_base_thickness = 3.0 * $scale;
+$wheel_flange_thickness = 1.0 * $scale;
+$wheel_flange_width = 1 * $scale;
 $wheel_elliptical_cutout_radial_length_scale = 2 * $scale;
 $wheel_elliptical_cutout_radial_thickness_scale = 1 * $scale;
 
 $axel_radius = .5 * $scale;
 
-axel_set(3, 3, $grade, $tolerance, $wheel_base_thickness, $axel_radius);
+translate([7.5,7.5,0])
+{
+    axel_set(3, 3, $grade, $tolerance, $wheel_base_thickness, $axel_radius);
+}
 
-
-//wheel_set( 2
-//         , 2
-//         , $wheel_radius
-//         , $wheel_base_thickness
-//         , $wheel_flange_thickness
-//         , $wheel_flange_width
-//         , $wheel_elliptical_cutout_radial_length_scale
-//         ,$wheel_elliptical_cutout_radial_thickness_scale
-//         ,$axel_radius
-//         , $tolerance);
-
+wheel_set( 2
+         , 2
+         , $wheel_radius
+         , $wheel_base_thickness
+         , $wheel_flange_thickness
+         , $wheel_flange_width
+         , $wheel_elliptical_cutout_radial_length_scale
+         , $wheel_elliptical_cutout_radial_thickness_scale
+         , $axel_radius
+         , $tolerance);
 
 module wheel_set( num_rows
                 , num_columns
@@ -46,7 +47,7 @@ module wheel_set( num_rows
     {
         for(j = [0:1:num_columns-1])
         {
-            translate([(2*wheel_radius+tolerance) * i, (2*wheel_radius+tolerance) * j,0])
+            translate([(2.5*wheel_radius+tolerance) * i, (2.5*wheel_radius+tolerance) * j,0])
             {
                 wheel(                , wheel_radius
                 , wheel_base_thickness

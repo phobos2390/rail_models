@@ -1,8 +1,8 @@
 $fn = 20;
-$scale = 1.5;
+$scale = 1.25;
 
 // Rail
-$rail_extrusion_length=50 * $scale;
+$rail_extrusion_length=140 * $scale;
 $rail_length=6 * $scale;
 $rail_widthtop=2 * $scale;
 $rail_widthbottom=6.5 * $scale;   // 6.61 mm = 26.44 mm / 4
@@ -16,12 +16,12 @@ $cross_thickness=6.5 * $scale;
 $cross_depressionwidth=6.5 * $scale;
 $cross_depressionheight=1.2 * $scale;
 $cross_tolerance=0.2 * $scale;
-$cross_width=32.5 * $scale;
+$cross_grade= 59.4 * $scale;
+$cross_width= $cross_grade + (12.5 * $scale);
 $cross_height=4 * $scale;
-$cross_grade=20 * $scale;
 
-$distance_between=60 * $scale;
-$circle_distance=10 * $scale;
+$distance_between=70 * $scale;
+$circle_distance=11 * $scale;
 
 module tie_cross_section( length
                         , widthtop
@@ -125,7 +125,7 @@ translate([0,$distance_between,0])
 }
 }
 //*/
-for(i = [0:$cross_height+$cross_tolerance:10*($cross_height+$cross_tolerance)])
+for(i = [0:$cross_height+5*$cross_tolerance:10*($cross_height+5*$cross_tolerance)])
 {
     translate([0,i,0])
     {
@@ -141,7 +141,7 @@ for(i = [0:$cross_height+$cross_tolerance:10*($cross_height+$cross_tolerance)])
         }
     }
 }
-for(i = [$cross_height+$cross_tolerance:$cross_height+$cross_tolerance:10*($cross_height+$cross_tolerance)])
+for(i = [$cross_height+5*$cross_tolerance:$cross_height+5*$cross_tolerance:10*($cross_height+5*$cross_tolerance)])
 {
     translate([0,-i,0])
     {
