@@ -21,7 +21,7 @@ $cross_width= $cross_grade + (12.5 * $scale);
 $cross_height=4 * $scale;
 
 $distance_between=70 * $scale;
-$circle_distance=11 * $scale;
+$circle_distance=13 * $scale;
 
 module tie_cross_section( length
                         , widthtop
@@ -34,6 +34,12 @@ module tie_cross_section( length
     union()
     {
         square([widthcenter,length], center=true);
+        true_width=widthtop/2 + bevelsize;
+        true_height=length/2-topheight/2;
+        triangle_points=[[-true_width,true_height],
+                         [true_width,true_height],
+                         [0,true_height-length/4]];
+        polygon(points=triangle_points, paths=[[0,1,2]]);
         translate([0,length/2,0])
         {
             difference()
@@ -49,10 +55,13 @@ module tie_cross_section( length
                 }
             }
         }
+        //*/
+        //*/
         translate([0,-length/2,0])
         {
             square([widthbottom,bottomheight], center=true);
         }
+        //*/
     }
 
 };
@@ -99,8 +108,8 @@ module tie_beam_cross_section( width
 }
 
 
-//*/
-#for(i = [0:30:360])
+/*/
+for(i = [0:30:360])
 {
 translate([0,$distance_between,0])
 {
@@ -108,7 +117,6 @@ translate([0,$distance_between,0])
     {
         translate([0,-$circle_distance,0])
         {
-//            linear_extrude($rail_extrusion_length, center=true)
             linear_extrude($rail_extrusion_length)
             {
                 tie_cross_section
@@ -125,7 +133,8 @@ translate([0,$distance_between,0])
 }
 }
 //*/
-for(i = [0:$cross_height+5*$cross_tolerance:10*($cross_height+5*$cross_tolerance)])
+/*/
+for(i = [0:$cross_height+5*$cross_tolerance:8*($cross_height+5*$cross_tolerance)])
 {
     translate([0,i,0])
     {
@@ -141,7 +150,7 @@ for(i = [0:$cross_height+5*$cross_tolerance:10*($cross_height+5*$cross_tolerance
         }
     }
 }
-for(i = [$cross_height+5*$cross_tolerance:$cross_height+5*$cross_tolerance:10*($cross_height+5*$cross_tolerance)])
+for(i = [$cross_height+5*$cross_tolerance:$cross_height+5*$cross_tolerance:4*($cross_height+5*$cross_tolerance)])
 {
     translate([0,-i,0])
     {
@@ -163,9 +172,36 @@ rotate(90, [1,0,0])
 {
     union()
     {
-        translate([-10,0,0])
+        minimum_rotation=2800;
+        translate([-minimum_rotation,0,0])
+        rotate([-90,0,0]) rotate_extrude(angle=-17,$fa=1,$fn=360)
         {
-            linear_extrude(50, center=true)
+            translate([minimum_rotation,0])
+            {
+                translate([-$cross_grade/2,0])
+                tie_cross_section
+                    ( length=$rail_length
+                    , widthtop=$rail_widthtop
+                    , widthbottom=$rail_widthbottom
+                    , topheight=$rail_topheight   
+                    , bevelsize=$rail_bevelsize
+                    , widthcenter=$rail_widthcenter
+                    , bottomheight=$rail_bottomheight);
+                
+                translate([$cross_grade/2,0])
+                tie_cross_section
+                    ( length=$rail_length
+                    , widthtop=$rail_widthtop
+                    , widthbottom=$rail_widthbottom
+                    , topheight=$rail_topheight   
+                    , bevelsize=$rail_bevelsize
+                    , widthcenter=$rail_widthcenter
+                    , bottomheight=$rail_bottomheight);
+            }
+        }
+        translate([-$cross_grade/2,0,0])
+        {
+            linear_extrude(1000)//, center=true)
             {
                 tie_cross_section
                     ( length=$rail_length
@@ -177,9 +213,9 @@ rotate(90, [1,0,0])
                     , bottomheight=$rail_bottomheight);
             }
         }
-        translate([10,0,0])
+        translate([$cross_grade/2,0,0])
         {
-            linear_extrude(50, center=true)
+            linear_extrude(1000)//, center=true)
             {
                 tie_cross_section
                     ( length=$rail_length
@@ -191,7 +227,7 @@ rotate(90, [1,0,0])
                     , bottomheight=$rail_bottomheight);
             }
         }
-        translate([0,-4,0])
+        translate([0,-$rail_length/1.5,0])
         {
             linear_extrude($cross_thickness, center=true)
             {
